@@ -3,7 +3,6 @@ import { motion, useInView } from 'framer-motion'
 import { MapPin, Mail, Phone, Github, Linkedin, ExternalLink, GraduationCap, Briefcase } from 'lucide-react'
 import { personalInfo, education, experience } from '@/data/portfolio'
 import NumberTicker from '@/components/magicui/number-ticker'
-import { BorderBeam } from '@/components/magicui/border-beam'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -47,14 +46,14 @@ export default function About() {
             {/* Left */}
             <motion.div variants={itemVariants} className="flex flex-col items-center gap-7">
               {/* Avatar */}
-              <div className="relative">
-                <div className="relative w-52 h-52 md:w-64 md:h-64 rounded-2xl overflow-hidden">
-                  <div className="w-full h-full bg-gradient-to-br from-violet-600/30 via-purple-600/20 to-cyan-500/30 flex flex-col items-center justify-center border border-violet-500/20 gap-2">
-                    <span className="text-6xl font-bold text-white/80">PS</span>
-                    <span className="text-zinc-400 text-sm">Pawan Sain</span>
-                  </div>
-                  <BorderBeam size={250} duration={10} colorFrom="#9E7AFF" colorTo="#38bdf8" />
-                </div>
+              <div className="relative w-52 h-52 md:w-64 md:h-64 rounded-2xl shadow-2xl shadow-violet-500/20 ring-2 ring-violet-500/30"
+                style={{
+                  backgroundImage: 'url(/photo.jpg)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center top',
+                }}
+              >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
               </div>
 
               {/* Contact details */}
