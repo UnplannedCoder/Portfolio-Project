@@ -1,13 +1,12 @@
-import { useState, useEffect, Suspense, lazy } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowDown, Github, Linkedin, Download, Sparkles, BarChart2, Code2, CreditCard, EyeOff } from 'lucide-react'
 import { personalInfo } from '@/data/portfolio'
 import { Meteors } from '@/components/magicui/meteors'
 import { SparklesText } from '@/components/magicui/sparkles-text'
 import { LanyardErrorBoundary } from '@/components/lanyard/LanyardErrorBoundary'
-
-// Lazy-load the heavy 3-D component so it never blocks initial paint
-const Lanyard = lazy(() => import('@/components/lanyard/Lanyard'))
+// Import eagerly — no lazy() — so it's bundled and ready before the button is clicked
+import Lanyard from '@/components/lanyard/Lanyard'
 
 const roles = [
   'Data Analyst',
@@ -232,29 +231,14 @@ export default function Hero() {
                     </div>
                   }
                 >
-                  <Suspense
-                    fallback={
-                      <div className="w-full h-full flex items-center justify-center">
-                        <div className="flex flex-col items-center gap-3">
-                          <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
-                            className="w-10 h-10 border-2 border-violet-500/30 border-t-violet-500 rounded-full"
-                          />
-                          <span className="text-zinc-500 text-sm">Loading card...</span>
-                        </div>
-                      </div>
-                    }
-                  >
-                    <Lanyard
-                      position={[0, 0, 17]}
-                      gravity={[0, -40, 0]}
-                      fov={16}
-                      transparent={true}
-                      frontImage="/photo.jpg"
-                      imageFit="cover"
-                    />
-                  </Suspense>
+                  <Lanyard
+                    position={[0, 0, 17]}
+                    gravity={[0, -40, 0]}
+                    fov={16}
+                    transparent={true}
+                    frontImage="/photo.jpg"
+                    imageFit="cover"
+                  />
                 </LanyardErrorBoundary>
               </motion.div>
             )}
