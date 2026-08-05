@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { skills } from '@/data/portfolio'
 import { cn } from '@/lib/utils'
@@ -33,26 +33,38 @@ const BASE_TILES = [
 // Repeat 3× so carousel is dense
 const SKILL_TILES = [...BASE_TILES, ...BASE_TILES, ...BASE_TILES]
 
-// Pre-computed random Y offsets — seeded so they stay stable
-const RANDOM_Y_OFFSETS = SKILL_TILES.map((_, i) => {
-  const seed = (i * 137.508) % 1  // golden ratio pseudo-random
-  return (seed - 0.5) * 180       // spread ±90px vertically
-})
-
 const TILE_W     = 72
 const TILE_H     = 72
-const RADIUS     = 380   // circle radius — fits inside ~760px wide box
 const AUTO_SPEED = 0.04  // deg/frame
 
 function SkillCarousel() {
+  const containerRef = useRef<HTMLDivElement>(null)
   const angleRef = useRef(0)
   const [angle, setAngle]  = useState(0)
+  const [dims, setDims]    = useState({ w: 680, h: 260, radius: 340 })
   const rafRef   = useRef<number | null>(null)
   const dragging = useRef(false)
   const lastX    = useRef(0)
   const velRef   = useRef(AUTO_SPEED)
 
   const N = SKILL_TILES.length
+
+  // Measure container width and derive radius + height responsively
+  const updateDims = useCallback(() => {
+    if (!containerRef.current) return
+    const w = containerRef.current.offsetWidth
+    const isMobile = w < 640
+    const radius = isMobile ? w * 0.42 : Math.min(w * 0.47, 380)
+    const h      = isMobile ? 200 : 260
+    setDims({ w, h, radius })
+  }, [])
+
+  useEffect(() => {
+    updateDims()
+    const ro = new ResizeObserver(updateDims)
+    if (containerRef.current) ro.observe(containerRef.current)
+    return () => ro.disconnect()
+  }, [updateDims])
 
   useEffect(() => {
     const step = () => {
@@ -91,21 +103,30 @@ function SkillCarousel() {
   }
   const onTouchEnd = () => { dragging.current = false }
 
-  // BOX dimensions — matches heading width (~680px, centred)
-  const BOX_W = 680
-  const BOX_H = 300
+  // Scale tile size on very small screens
+  const tileScale = dims.w < 400 ? 0.78 : dims.w < 640 ? 0.88 : 1
+  const tileW = Math.round(TILE_W * tileScale)
+  const tileH = Math.round(TILE_H * tileScale)
+
+  // Responsive Y spread
+  const ySpread = dims.h * 0.35
+  const yOffsets = SKILL_TILES.map((_, i) => {
+    const seed = (i * 137.508) % 1
+    return (seed - 0.5) * ySpread * 2
+  })
 
   return (
-    <div className="flex justify-center">
+    <div ref={containerRef} className="w-full">
       <div
         style={{
-          width: BOX_W,
-          height: BOX_H,
+          width: '100%',
+          height: dims.h,
           position: 'relative',
           overflow: 'hidden',
-          borderRadius: 20,
+          borderRadius: 16,
           cursor: 'grab',
           userSelect: 'none',
+          touchAction: 'none',
         }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
@@ -117,18 +138,18 @@ function SkillCarousel() {
       >
         {/* Left / right edge fades */}
         <div className="absolute inset-0 pointer-events-none z-10" style={{
-          background: 'linear-gradient(to right, #09090b 0%, transparent 12%, transparent 88%, #09090b 100%)',
+          background: 'linear-gradient(to right, #09090b 0%, transparent 10%, transparent 90%, #09090b 100%)',
         }} />
         {/* Top / bottom edge fades */}
         <div className="absolute inset-0 pointer-events-none z-10" style={{
-          background: 'linear-gradient(to bottom, #09090b 0%, transparent 14%, transparent 86%, #09090b 100%)',
+          background: 'linear-gradient(to bottom, #09090b 0%, transparent 12%, transparent 88%, #09090b 100%)',
         }} />
 
-        {/* 3-D stage — centred inside the box */}
+        {/* 3-D stage */}
         <div style={{
           position: 'absolute',
-          left: BOX_W / 2,
-          top:  BOX_H / 2,
+          left: dims.w / 2,
+          top:  dims.h / 2,
           transformStyle: 'preserve-3d',
           perspective: 900,
           width: 0,
@@ -138,24 +159,23 @@ function SkillCarousel() {
             const baseAngle = (i / N) * 360
             const deg  = baseAngle + angle
             const rad  = (deg * Math.PI) / 180
-            const x    = Math.sin(rad) * RADIUS
-            const z    = Math.cos(rad) * RADIUS
-            // Random Y — each tile has a fixed random vertical offset
-            const y    = RANDOM_Y_OFFSETS[i]
+            const x    = Math.sin(rad) * dims.radius
+            const z    = Math.cos(rad) * dims.radius
+            const y    = yOffsets[i]
 
-            const depth   = (z + RADIUS) / (RADIUS * 2)       // 0–1
-            const scale   = 0.5 + depth * 0.55                // 0.5–1.05
-            const opacity = 0.3 + depth * 0.7                 // 0.3–1.0
+            const depth   = (z + dims.radius) / (dims.radius * 2)
+            const scale   = 0.5 + depth * 0.55
+            const opacity = 0.3 + depth * 0.7
 
             return (
               <div
                 key={`${tile.label}-${i}`}
                 style={{
                   position: 'absolute',
-                  width:  TILE_W,
-                  height: TILE_H,
-                  left:  -TILE_W / 2,
-                  top:   -TILE_H / 2,
+                  width:  tileW,
+                  height: tileH,
+                  left:  -tileW / 2,
+                  top:   -tileH / 2,
                   transform: `translate3d(${x}px,${y}px,${z}px) scale(${scale})`,
                   opacity,
                   zIndex: Math.round(depth * 100),
@@ -163,7 +183,7 @@ function SkillCarousel() {
                 }}
               >
                 <div
-                  className="w-full h-full flex flex-col items-center justify-center gap-1 rounded-[15px]"
+                  className="w-full h-full flex flex-col items-center justify-center gap-1 rounded-[14px]"
                   style={{
                     background: '#15151a',
                     border:     '1px solid rgba(255,255,255,0.08)',
@@ -182,7 +202,7 @@ function SkillCarousel() {
                     }}
                   />
                   <span style={{
-                    fontSize:      6.5,
+                    fontSize:      dims.w < 640 ? 6 : 6.5,
                     fontWeight:    700,
                     color:         'rgba(255,255,255,0.45)',
                     letterSpacing: '0.07em',

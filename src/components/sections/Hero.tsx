@@ -75,8 +75,8 @@ export default function Hero() {
       </div>
 
       {/* ── Two-column layout ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-4">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+        <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-4">
 
           {/* ── LEFT: text content ── */}
           <div className={`flex flex-col items-center text-center transition-all duration-500 ${showCard ? 'lg:items-start lg:text-left lg:w-1/2' : 'w-full'}`}>
@@ -235,7 +235,7 @@ export default function Hero() {
                 exit={{ opacity: 0, x: 60, scale: 0.92 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 className="w-full lg:w-1/2 shrink-0"
-                style={{ height: '700px' }}
+                style={{ height: 'clamp(380px, 55vw, 700px)' }}
               >
                 <LanyardErrorBoundary
                   key="lanyard-card"
