@@ -74,12 +74,14 @@ export default function Hero() {
         <Meteors number={12} />
       </div>
 
-      {/* ── Two-column layout ── */}
+      {/* ── Layout ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
-        <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-4">
 
-          {/* ── LEFT: text content ── */}
-          <div className={`flex flex-col items-center text-center transition-all duration-500 ${showCard ? 'lg:items-start lg:text-left lg:w-1/2' : 'w-full'}`}>
+        {/* On desktop with card: side-by-side. On mobile: always stacked */}
+        <div className={`flex flex-col items-center gap-6 ${showCard ? 'lg:flex-row lg:items-center lg:gap-4' : ''}`}>
+
+          {/* ── Text content — always full width on mobile ── */}
+          <div className={`w-full flex flex-col items-center text-center transition-all duration-500 ${showCard ? 'lg:w-1/2 lg:items-start lg:text-left' : ''}`}>
 
             {/* Badge */}
             <motion.div
@@ -226,16 +228,16 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* ── RIGHT: Lanyard 3-D card ── */}
+          {/* ── Lanyard card — stacks below text on mobile, right column on desktop ── */}
           <AnimatePresence>
             {showCard && (
               <motion.div
-                initial={{ opacity: 0, x: 60, scale: 0.92 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 60, scale: 0.92 }}
+                initial={{ opacity: 0, y: 40, scale: 0.92 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 40, scale: 0.92 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 className="w-full lg:w-1/2 shrink-0"
-                style={{ height: 'clamp(380px, 55vw, 700px)' }}
+                style={{ height: 'clamp(320px, 80vw, 700px)' }}
               >
                 <LanyardErrorBoundary
                   key="lanyard-card"
