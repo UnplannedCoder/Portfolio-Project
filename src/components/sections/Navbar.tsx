@@ -21,7 +21,6 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
-
       const sections = navLinks.map((l) => l.href.slice(1))
       const current = sections.find((id) => {
         const el = document.getElementById(id)
@@ -31,7 +30,6 @@ export default function Navbar() {
       })
       if (current) setActiveSection(current)
     }
-
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -101,6 +99,7 @@ export default function Navbar() {
                 href={personalInfo.resume}
                 target="_blank"
                 rel="noopener noreferrer"
+                download="Pawan_Sain_Resume.pdf"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="ml-4 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-colors duration-200"
@@ -152,6 +151,7 @@ export default function Navbar() {
                 href={personalInfo.resume}
                 target="_blank"
                 rel="noopener noreferrer"
+                download="Pawan_Sain_Resume.pdf"
                 className="mt-2 px-4 py-3 rounded-lg bg-violet-600 text-white text-sm font-medium text-center"
                 onClick={() => setIsOpen(false)}
               >

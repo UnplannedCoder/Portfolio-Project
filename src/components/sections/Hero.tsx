@@ -5,8 +5,14 @@ import { personalInfo } from '@/data/portfolio'
 import { Meteors } from '@/components/magicui/meteors'
 import { SparklesText } from '@/components/magicui/sparkles-text'
 import { LanyardErrorBoundary } from '@/components/lanyard/LanyardErrorBoundary'
-// Import eagerly — no lazy() — so it's bundled and ready before the button is clicked
 import Lanyard from '@/components/lanyard/Lanyard'
+// Preload the GLB model so it's cached before the card is shown
+import { useGLTF } from '@react-three/drei'
+import cardGLB from '@/assets/lanyard/card.glb'
+
+// Kick off GLB download immediately when the module loads —
+// by the time the user clicks Show Card the model is already in memory
+useGLTF.preload(cardGLB as string)
 
 const roles = [
   'Data Analyst',
@@ -38,8 +44,19 @@ function RoleRotator() {
 export default function Hero() {
   const [showCard, setShowCard] = useState(false)
 
-  const scrollToAbout = () =>
-    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+  const scrollToProjects = () =>
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+
+  // Preload photo and lanyard texture so they're cached before Show Card is clicked
+  useEffect(() => {
+    const assets = ['/photo/photo.jpg', '/skills/../assets/lanyard/lanyard.png']
+    assets.forEach(src => {
+      const img = new Image()
+      img.src = src
+    })
+    // Also prefetch the photo via fetch so it lands in the HTTP cache
+    fetch('/photo/photo.jpg', { priority: 'low' } as RequestInit).catch(() => {})
+  }, [])
 
   return (
     <section
@@ -138,7 +155,7 @@ export default function Hero() {
               className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-8"
             >
               <button
-                onClick={scrollToAbout}
+                onClick={scrollToProjects}
                 className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/30 hover:scale-105 active:scale-95"
               >
                 <BarChart2 className="w-4 h-4" />
@@ -157,6 +174,7 @@ export default function Hero() {
                 href={personalInfo.resume}
                 target="_blank"
                 rel="noopener noreferrer"
+                download="Pawan_Sain_Resume.pdf"
                 className="flex items-center gap-2 px-6 py-3 rounded-xl border border-zinc-700 hover:border-violet-500 text-zinc-300 hover:text-white font-medium transition-all duration-300 hover:bg-violet-600/10"
               >
                 <Download className="w-4 h-4" />
@@ -236,7 +254,7 @@ export default function Hero() {
                     gravity={[0, -40, 0]}
                     fov={16}
                     transparent={true}
-                    frontImage="/photo.jpg"
+                    frontImage="/photo/photo.jpg"
                     imageFit="cover"
                   />
                 </LanyardErrorBoundary>
@@ -248,7 +266,7 @@ export default function Hero() {
         {/* Scroll cue — centered below both columns */}
         <motion.div className="flex justify-center mt-12">
           <motion.button
-            onClick={scrollToAbout}
+            onClick={scrollToProjects}
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
             className="text-zinc-600 hover:text-violet-400 transition-colors"

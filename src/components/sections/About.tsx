@@ -48,7 +48,7 @@ export default function About() {
               {/* Avatar */}
               <div className="relative w-52 h-52 md:w-64 md:h-64 rounded-2xl shadow-2xl shadow-violet-500/20 ring-2 ring-violet-500/30"
                 style={{
-                  backgroundImage: 'url(/photo.jpg)',
+                  backgroundImage: 'url(/photo/photo.jpg)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center top',
                 }}
@@ -162,6 +162,7 @@ export default function About() {
                   href={personalInfo.resume}
                   target="_blank"
                   rel="noopener noreferrer"
+                  download="Pawan_Sain_Resume.pdf"
                   className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-semibold text-sm transition-all hover:shadow-lg hover:shadow-violet-500/25 hover:scale-105 active:scale-95"
                 >
                   Download Resume

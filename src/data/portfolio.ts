@@ -8,7 +8,7 @@ export const personalInfo = {
   github: 'https://github.com/UnplannedCoder',
   linkedin: 'https://www.linkedin.com/in/pawan-sain-18b74631b',
   twitter: '#',
-  resume: '#',
+  resume: '/resume/Resume.pdf',
   about: `I'm Pawan Sain, an aspiring Data Analyst and Computer Science student at JECRC University with a strong passion for transforming raw data into meaningful business insights. I enjoy solving real-world problems through data analysis and visualization.
 
 I have earned the Google Data Analytics Professional Certificate, where I gained hands-on experience throughout the complete data analysis lifecycle — from data collection and cleaning to analysis, visualization, and communicating insights.
