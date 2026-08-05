@@ -1,6 +1,6 @@
 # Pawan Sain — Personal Portfolio
 
-A modern, animated personal portfolio built with React, TypeScript, and Tailwind CSS. Features smooth Framer Motion animations, Magic UI effects, Aceternity UI visual components, a 3D physics Lanyard card, and a fully responsive dark theme.
+A modern, animated personal portfolio built with React, TypeScript, and Tailwind CSS. Features smooth Framer Motion animations, Magic UI effects, Aceternity UI visual components, a 3D physics Lanyard card, a draggable 3D skill carousel, and a fully responsive dark theme.
 
 **Live:** _deploy link here_  &nbsp;|&nbsp; **Author:** [Pawan Sain](https://www.linkedin.com/in/pawan-sain-18b74631b)
 
@@ -15,23 +15,24 @@ A modern, animated personal portfolio built with React, TypeScript, and Tailwind
 | Styling | Tailwind CSS v3 |
 | Animations | Framer Motion 11 |
 | UI Components | shadcn/ui (Radix UI primitives) |
-| Effects | Magic UI — Marquee, BorderBeam, Meteors, SparklesText, NumberTicker |
-| Effects | Aceternity UI — BackgroundBeams, MovingBorder |
+| Effects | Magic UI — BorderBeam, Meteors, SparklesText, NumberTicker |
+| Effects | Aceternity UI — BackgroundBeams |
 | 3D Card | @react-three/fiber, @react-three/drei, @react-three/rapier, meshline |
+| Drag Gestures | @use-gesture/react |
 | Icons | Lucide React |
 
 ---
 
 ## Features
 
-- **Hero** — rotating role titles, SparklesText name, meteor shower background, Show/Hide 3D Lanyard card toggle
-- **3D Lanyard Card** — physics-based draggable card with your photo, powered by Rapier + React Three Fiber, lazy loaded
+- **Hero** — rotating role titles, SparklesText name, meteor shower background, Show/Hide 3D Lanyard card toggle. View My Work scrolls to Projects.
+- **3D Lanyard Card** — physics-based draggable card with profile photo, preloaded in background for instant display
 - **About** — profile photo, bio, education, internship experience, animated stat counters, contact details
-- **Skills** — animated progress bars per category, infinite marquee tech badge strip
+- **Skills** — draggable 3D rotating carousel of tech icons + animated progress bars per category
 - **Projects** — filter by All / Full Stack / Data Analytics, clickable images + titles, live demo and source code links
 - **Certificates** — full certificate images (8 certs), issuer-colored accents from Google, Microsoft, Meta, Deloitte, HackerRank, GeeksforGeeks
 - **Contact** — contact form, social links, availability status badge
-- **Navbar** — scroll-spy active state, smooth scroll, mobile hamburger menu
+- **Navbar** — scroll-spy active state, smooth scroll, mobile hamburger menu, Resume download button
 - **Dark theme** throughout with glass morphism, dot/grid backgrounds, and glow effects
 
 ---
@@ -41,9 +42,14 @@ A modern, animated personal portfolio built with React, TypeScript, and Tailwind
 ```
 Portfolio/
 ├── public/
-│   ├── photo.jpg                  # Your profile photo (used in About + Lanyard card)
+│   ├── favicon.png                # Browser tab icon
+│   ├── photo/
+│   │   └── photo.jpg              # Profile photo (About section + Lanyard card)
+│   ├── resume/
+│   │   └── Resume.pdf             # Downloadable resume
 │   ├── certificates/              # Certificate images (.png)
-│   └── projects/                  # Project screenshot images (.png)
+│   ├── projects/                  # Project screenshot images (.png)
+│   └── skills/                    # Tech stack icon images (.png)
 ├── src/
 │   ├── assets/
 │   │   └── lanyard/
@@ -51,8 +57,9 @@ Portfolio/
 │   │       └── lanyard.png        # Lanyard band texture
 │   ├── components/
 │   │   ├── aceternity/            # BackgroundBeams, MovingBorder
+│   │   ├── domegallery/           # DomeGallery.tsx, DomeGallery.css (skill carousel)
 │   │   ├── lanyard/               # Lanyard.tsx, Lanyard.css, LanyardErrorBoundary.tsx
-│   │   ├── magicui/               # Marquee, BorderBeam, Meteors, SparklesText, NumberTicker
+│   │   ├── magicui/               # BorderBeam, Meteors, SparklesText, NumberTicker
 │   │   └── sections/              # Navbar, Hero, About, Skills, Projects, Certificates, Contact, Footer
 │   ├── data/
 │   │   └── portfolio.ts           # All content — personal info, skills, projects, certificates
@@ -63,6 +70,7 @@ Portfolio/
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── index.css                  # Tailwind directives + custom utilities
+├── index.html                     # Includes preload hints for photo
 ├── tailwind.config.ts
 ├── vite.config.ts                 # includes assetsInclude: ['**/*.glb']
 └── tsconfig.app.json
@@ -117,15 +125,19 @@ All personal content lives in one file — **`src/data/portfolio.ts`**.
 | `education` | Degree, university, duration |
 | `experience` | Internship/job roles and responsibilities |
 | `skills` | Skill categories, names, proficiency levels |
-| `techStack` | Marquee badges in the Skills section |
+| `techStack` | Tech stack labels (legacy, kept for reference) |
 | `projects` | Project cards — title, description, tags, image, links, type |
 | `certificates` | Certificate cards — title, issuer, date, image, tags |
 
 ### Profile Photo
 
-Save your photo as `public/photo.jpg`. It is used in:
+Save your photo to `public/photo/photo.jpg`. Used in:
 - The **About** section avatar box
-- The **Lanyard 3D card** front face (via `frontImage="/photo.jpg"` prop in Hero)
+- The **Lanyard 3D card** front face
+
+### Resume
+
+Save your resume to `public/resume/Resume.pdf`. The `personalInfo.resume` field in `portfolio.ts` points to `/resume/Resume.pdf` and feeds all Resume buttons. The `download="Pawan_Sain_Resume.pdf"` attribute forces a download instead of opening in the browser.
 
 ### Adding Project Images
 
@@ -143,9 +155,13 @@ Save to `public/certificates/<filename>.png` and set the `image` field:
 image: '/certificates/your-cert.png',
 ```
 
+### Skill Icons
+
+Tech stack icons live in `public/skills/` as `.png` files. The carousel in `Skills.tsx` references them directly. To add or replace an icon, drop a `.png` into `public/skills/` and update the `SKILL_TILES` array in `src/components/sections/Skills.tsx`.
+
 ### Lanyard Card
 
-The 3D card is toggled by the **Show Card / Hide Card** button in the Hero section. To change the photo on the card, update `frontImage` in `Hero.tsx`:
+The 3D card is toggled by the **Show Card / Hide Card** button in the Hero section. The GLB model is preloaded in the background on page load so there is no delay when the button is clicked. To update the photo on the card, change `frontImage` in `Hero.tsx`:
 
 ```tsx
 <Lanyard
@@ -153,7 +169,7 @@ The 3D card is toggled by the **Show Card / Hide Card** button in the Hero secti
   gravity={[0, -40, 0]}
   fov={16}
   transparent={true}
-  frontImage="/photo.jpg"
+  frontImage="/photo/photo.jpg"
   imageFit="cover"
 />
 ```
