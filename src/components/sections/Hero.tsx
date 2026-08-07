@@ -13,12 +13,7 @@ useGLTF.preload(cardGLB as string)
 
 const roles = ['Data Analyst', 'Full Stack Developer']
 
-function RoleRotator() {
-  const [index, setIndex] = useState(0)
-  useEffect(() => {
-    const t = setInterval(() => setIndex(p => (p + 1) % roles.length), 2800)
-    return () => clearInterval(t)
-  }, [])
+function RoleRotator({ index }: { index: number }) {
   return (
     <AnimatePresence mode="wait">
       <motion.span
@@ -37,6 +32,36 @@ function RoleRotator() {
 
 export default function Hero() {
   const [showCard, setShowCard] = useState(false)
+
+  const [roleIndex, setRoleIndex] = useState(0)
+
+  useEffect(() => {
+  const timer = setInterval(() => {
+    setRoleIndex((prev) => (prev + 1) % roles.length)
+  }, 2800)
+
+  return () => clearInterval(timer)
+}, [])
+
+  const analystSkills = [
+    'Excel',
+    'Python',
+    'SQL',
+    'Power BI',
+    'DAX',
+    'Power Query',
+  ]
+
+  const developerSkills = [
+    'JavaScript',
+    'React.js',
+    'Node.js',
+    'Express.js',
+    'MongoDB',
+  ]
+
+  const currentSkills =
+    roleIndex === 0 ? analystSkills : developerSkills
 
   const scrollToProjects = () =>
     document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
@@ -90,26 +115,51 @@ export default function Hero() {
               className="text-xl md:text-2xl font-semibold text-zinc-300 mb-4 h-9 flex items-center gap-2"
             >
               <span className="text-zinc-400">I'm a</span>
-              <RoleRotator />
+              <RoleRotator index={roleIndex} />
             </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.54 }}
-              className="text-base text-zinc-500 max-w-xl mb-8 leading-relaxed"
-            >
-              {personalInfo.tagline} · JECRC University · Jaipur
-            </motion.p>
 
             <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.62 }}
-              className="flex flex-wrap justify-center lg:justify-start gap-2 mb-8"
+              className="text-base text-zinc-500 max-w-xl mb-8 leading-relaxed"
             >
-              {['Python', 'SQL', 'Power BI', 'Excel', 'React.js', 'Node.js'].map(s => (
-                <span key={s} className="px-3 py-1 rounded-full text-xs font-medium bg-zinc-900 border border-zinc-800 text-zinc-400">{s}</span>
-              ))}
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={roleIndex}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.4 }}
+                  className="mb-4"
+                >
+                  {roleIndex === 0
+                    ? 'Transforming raw data into meaningful business insights'
+                    : 'Building scalable web applications that solve real-world problems'}
+                </motion.p>
+              </AnimatePresence>
+
+              <p className="text-zinc-400">
+                · JECRC University · Jaipur
+              </p>
             </motion.div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={roleIndex}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+                className="flex flex-wrap justify-center lg:justify-start gap-2 mb-8"
+              >
+                {currentSkills.map((s) => (
+                  <span
+                    key={s}
+                    className="px-3 py-1 rounded-full text-xs font-medium bg-zinc-900 border border-zinc-800 text-zinc-400"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </motion.div>
+            </AnimatePresence>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -162,9 +212,13 @@ export default function Hero() {
 
           {/* ── RIGHT: Card ── */}
           <div
-            className={`w-full self-center ${showCard ? 'block' : 'hidden'}`}
-            style={{ height: 'clamp(380px, 60vw, 680px)' }}
-          >
+              className={`w-full ${
+                showCard
+                  ? 'flex justify-center items-center'
+                  : 'hidden'
+              }`}
+              style={{ height: 'clamp(380px, 60vw, 680px)' }}
+            >
             <AnimatePresence mode="wait">
               {showCard && (
                 <motion.div

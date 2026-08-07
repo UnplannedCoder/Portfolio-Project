@@ -1,7 +1,10 @@
 export const personalInfo = {
   name: 'Pawan Sain',
   title: 'Data Analyst & Full Stack Developer',
-  tagline: 'Transforming raw data into meaningful business insights',
+  taglines: {
+  analyst: 'Transforming raw data into meaningful business insights',
+  developer: 'Turning Ideas into Scalable Digital Products',
+  },
   email: 'pawansa2006@gmail.com',
   phone: '+91 9829019720',
   location: 'Greater Jaipur Area, India',
