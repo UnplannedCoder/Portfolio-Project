@@ -72,7 +72,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section id="home" className="relative min-h-[92vh] flex items-center bg-zinc-950">
+    <section id="home" className="relative min-h-[100vh] flex items-center bg-zinc-950">
 
       {/* Backgrounds */}
       <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />
