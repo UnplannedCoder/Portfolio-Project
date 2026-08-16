@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowDown, Github, Linkedin, Download, Sparkles, BarChart2, Code2, CreditCard, EyeOff } from 'lucide-react'
+import { ArrowDown, Github, Linkedin, Download, Sparkles, BarChart2, Code2, CreditCard } from 'lucide-react'
 import { personalInfo } from '@/data/portfolio'
 import { Meteors } from '@/components/magicui/meteors'
 import { SparklesText } from '@/components/magicui/sparkles-text'
 import { LanyardErrorBoundary } from '@/components/lanyard/LanyardErrorBoundary'
 import Lanyard from '@/components/lanyard/Lanyard'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, useTexture } from '@react-three/drei'
 import cardGLB from '@/assets/lanyard/card.glb'
+import lanyardPNG from '@/assets/lanyard/lanyard.png'
 
+// Preload 3D models and textures in background
 useGLTF.preload(cardGLB as string)
+useTexture.preload(lanyardPNG as string)
+useTexture.preload('/photo/photo.jpg')
 
 const roles = ['Data Analyst', 'Full Stack Developer']
 
@@ -31,17 +35,15 @@ function RoleRotator({ index }: { index: number }) {
 }
 
 export default function Hero() {
-  const [showCard, setShowCard] = useState(false)
-
   const [roleIndex, setRoleIndex] = useState(0)
 
   useEffect(() => {
-  const timer = setInterval(() => {
-    setRoleIndex((prev) => (prev + 1) % roles.length)
-  }, 2800)
+    const timer = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % roles.length)
+    }, 2800)
 
-  return () => clearInterval(timer)
-}, [])
+    return () => clearInterval(timer)
+  }, [])
 
   const analystSkills = [
     'Excel',
@@ -53,11 +55,10 @@ export default function Hero() {
   ]
 
   const developerSkills = [
-    'JavaScript',
+    'MongoDB',
+    'Express.js',
     'React.js',
     'Node.js',
-    'Express.js',
-    'MongoDB',
   ]
 
   const currentSkills =
@@ -90,7 +91,7 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
           {/* ── LEFT: Text ── */}
-          <div className={`flex flex-col items-center text-center transition-all duration-500 ${showCard ? 'lg:items-start lg:text-left' : 'lg:items-center lg:text-center col-span-2'}`}>
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -178,17 +179,6 @@ export default function Hero() {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-zinc-700 hover:border-violet-500 text-zinc-300 hover:text-white font-medium text-sm transition-all hover:bg-violet-600/10">
                 <Download className="w-4 h-4" /> Resume
               </a>
-              <motion.button
-                onClick={() => setShowCard(v => !v)}
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all border ${
-                  showCard
-                    ? 'bg-zinc-800 border-zinc-600 text-zinc-300 hover:bg-zinc-700'
-                    : 'bg-gradient-to-r from-cyan-600/20 to-violet-600/20 border-cyan-500/40 text-cyan-300 hover:border-cyan-400'
-                }`}
-              >
-                {showCard ? <><EyeOff className="w-4 h-4" /> Hide Card</> : <><CreditCard className="w-4 h-4" /> Show Card</>}
-              </motion.button>
             </motion.div>
 
             <motion.div
@@ -211,48 +201,35 @@ export default function Hero() {
           </div>
 
           {/* ── RIGHT: Card ── */}
-          <div
-              className={`w-full ${
-                showCard
-                  ? 'flex justify-center items-center'
-                  : 'hidden'
-              }`}
-              style={{ height: 'clamp(380px, 60vw, 680px)' }}
-            >
-            <AnimatePresence mode="wait">
-              {showCard && (
-                <motion.div
-                  key="lanyard"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.35, ease: 'easeOut' }}
-                  className="w-full h-full"
-                >
-                <LanyardErrorBoundary
-                  fallback={
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-center p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60">
-                        <CreditCard className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
-                        <p className="text-zinc-400 text-sm font-medium mb-1">Card failed to load</p>
-                        <p className="text-zinc-600 text-xs">Check console for details</p>
-                      </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="w-full flex justify-center items-center h-[420px] sm:h-[500px] lg:h-[620px]"
+          >
+            <div className="w-full h-full">
+              <LanyardErrorBoundary
+                fallback={
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60">
+                      <CreditCard className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
+                      <p className="text-zinc-400 text-sm font-medium mb-1">Card failed to load</p>
+                      <p className="text-zinc-600 text-xs">Check console for details</p>
                     </div>
-                  }
-                >
-                  <Lanyard
-                    position={[0, 0, 17]}
-                    gravity={[0, -40, 0]}
-                    fov={16}
-                    transparent={true}
-                    frontImage="/photo/photo.jpg"
-                    imageFit="cover"
-                  />
-                </LanyardErrorBoundary>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                  </div>
+                }
+              >
+                <Lanyard
+                  position={[0, 0, 17]}
+                  gravity={[0, -40, 0]}
+                  fov={16}
+                  transparent={true}
+                  frontImage="/photo/photo.jpg"
+                  imageFit="cover"
+                />
+              </LanyardErrorBoundary>
+            </div>
+          </motion.div>
 
         </div>{/* end grid */}
 

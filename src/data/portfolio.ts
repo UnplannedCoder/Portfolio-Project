@@ -71,15 +71,15 @@ export const skills = [
       { name: 'SQL (MySQL)', level: 82, icon: '🗄️' },
       { name: 'Power BI', level: 85, icon: '📈' },
       { name: 'MySQL', level: 80, icon: '🐬' },
-      { name: 'MongoDB', level: 72, icon: '🍃' },
     ],
   },
   {
     category: 'Web Development',
     items: [
+      { name: 'MongoDB', level: 72, icon: '🍃' },
+      { name: 'Express.js', level: 75, icon: '🚀' },
       { name: 'React.js', level: 80, icon: '⚛️' },
       { name: 'Node.js', level: 75, icon: '🟩' },
-      { name: 'Express.js', level: 75, icon: '🚀' },
     ],
   },
   {
