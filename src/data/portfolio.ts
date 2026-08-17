@@ -20,7 +20,7 @@ My technical toolkit includes Python, SQL, Excel, Power BI, Git, and GitHub. Alo
 
 I'm passionate about continuous learning, building practical projects, and currently seeking internship and entry-level opportunities where I can contribute, grow, and gain industry experience as a Data Analyst.`,
   stats: [
-    { label: 'Projects Completed', value: 8 },
+    { label: 'Projects Completed', value: 9 },
     { label: 'Certificates Earned', value: 8 },
     { label: 'Technologies Used', value: 15 },
     { label: 'Months Experience', value: 2 },
@@ -109,17 +109,28 @@ export const techStack = [
 export const projects = [
   {
     id: 1,
+    title: 'CodeNest',
+    description: 'A modern full-stack code snippet manager to create, organize, search, and manage reusable code snippets with syntax highlighting and instant clipboard copying.',
+    tags: ['React', 'Redux Toolkit', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS'],
+    github: 'https://github.com/UnplannedCoder/CodeNest-Snippet-Saver',
+    live: 'https://codenest-snippet-saver.vercel.app/',
+    image: '/projects/codenest.png',
+    featured: true,
+    type: 'Full Stack',
+  },
+  {
+    id: 2,
     title: 'Expense Tracker',
     description: 'A full-stack expense tracking app to log, categorize, and visualize personal finances. Features real-time balance updates and clean, responsive UI.',
     tags: ['React', 'Node.js', 'MongoDB', 'Express.js'],
-    github: '',
+    github: 'https://github.com/UnplannedCoder/Expense-Tracker-App',
     live: 'https://expense-tracker-app-rho-mocha.vercel.app',
     image: '/projects/expense-tracker.png',
     featured: true,
     type: 'Full Stack',
   },
   {
-    id: 2,
+    id: 3,
     title: 'AeroFlow AI',
     description: 'An AI-powered full-stack web application built during the DecodeLabs internship. Integrates modern frontend and backend technologies with AI-driven features.',
     tags: ['React', 'Node.js', 'Express.js', 'MongoDB'],
@@ -130,7 +141,7 @@ export const projects = [
     type: 'Full Stack',
   },
   {
-    id: 3,
+    id: 4,
     title: 'TaskFlow',
     description: 'A collaborative task management application with intuitive workflow management. Built with a full-stack architecture for efficient project tracking.',
     tags: ['React', 'Node.js', 'MongoDB', 'Express.js'],
@@ -141,7 +152,7 @@ export const projects = [
     type: 'Full Stack',
   },
   {
-    id: 4,
+    id: 5,
     title: 'SaaSify CRM',
     description: 'A SaaS-based Customer Relationship Management tool designed to streamline business workflows, manage leads, and track customer interactions.',
     tags: ['React', 'Node.js', 'Express.js', 'MongoDB'],
@@ -152,7 +163,7 @@ export const projects = [
     type: 'Full Stack',
   },
   {
-    id: 5,
+    id: 6,
     title: 'Aura Tasks',
     description: 'A beautifully designed task management app with smooth animations and a focus on user experience. Helps manage daily to-dos efficiently.',
     tags: ['React', 'Node.js', 'CSS', 'Express.js'],
@@ -163,7 +174,7 @@ export const projects = [
     type: 'Full Stack',
   },
   {
-    id: 6,
+    id: 7,
     title: 'Blinkit Sales Analysis Dashboard',
     description: 'An interactive Power BI dashboard analyzing Blinkit grocery sales data. Uncovers trends in product performance, category sales, and outlet-wise revenue.',
     tags: ['Power BI', 'Data Analytics', 'DAX', 'SQL'],
@@ -174,7 +185,7 @@ export const projects = [
     type: 'Data Analytics',
   },
   {
-    id: 7,
+    id: 8,
     title: 'Mobile Sales Analysis Dashboard',
     description: 'A comprehensive Power BI dashboard tracking mobile phone sales metrics, brand performance, regional trends, and key business KPIs.',
     tags: ['Power BI', 'Data Analytics', 'DAX', 'Excel'],
@@ -185,7 +196,7 @@ export const projects = [
     type: 'Data Analytics',
   },
   {
-    id: 8,
+    id: 9,
     title: 'Sales Performance Dashboard',
     description: 'An insightful Power BI dashboard delivering a 360° view of sales performance including revenue trends, top products, regional analysis, and growth metrics.',
     tags: ['Power BI', 'Data Analytics', 'DAX', 'Excel'],
