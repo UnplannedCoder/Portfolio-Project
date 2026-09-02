@@ -1,25 +1,25 @@
-import { cn } from '@/lib/utils'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 export const HoverEffect = ({
   items,
   className,
 }: {
   items: {
-    title: string
-    description: string
-    link?: string
-    icon?: React.ReactNode
-  }[]
-  className?: string
+    title: string;
+    description: string;
+    link?: string;
+    icon?: React.ReactNode;
+  }[];
+  className?: string;
 }) => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <div
       className={cn(
-        'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
         className,
       )}
     >
@@ -57,20 +57,20 @@ export const HoverEffect = ({
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
 export const Card = ({
   className,
   children,
 }: {
-  className?: string
-  children: React.ReactNode
+  className?: string;
+  children: React.ReactNode;
 }) => {
   return (
     <div
       className={cn(
-        'rounded-2xl h-full w-full p-4 overflow-hidden bg-zinc-900 border border-zinc-800 group-hover:border-violet-500/50 relative z-20 transition-colors duration-300',
+        "rounded-2xl h-full w-full p-4 overflow-hidden bg-zinc-900 border border-zinc-800 group-hover:border-violet-500/50 relative z-20 transition-colors duration-300",
         className,
       )}
     >
@@ -78,40 +78,40 @@ export const Card = ({
         <div className="p-4">{children}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const CardTitle = ({
   className,
   children,
 }: {
-  className?: string
-  children: React.ReactNode
+  className?: string;
+  children: React.ReactNode;
 }) => {
   return (
-    <h4 className={cn('text-zinc-100 font-bold tracking-wide mt-4', className)}>
+    <h4 className={cn("text-zinc-100 font-bold tracking-wide mt-4", className)}>
       {children}
     </h4>
-  )
-}
+  );
+};
 
 export const CardDescription = ({
   className,
   children,
 }: {
-  className?: string
-  children: React.ReactNode
+  className?: string;
+  children: React.ReactNode;
 }) => {
   return (
     <p
       className={cn(
-        'mt-2 text-zinc-400 tracking-wide leading-relaxed text-sm',
+        "mt-2 text-zinc-400 tracking-wide leading-relaxed text-sm",
         className,
       )}
     >
       {children}
     </p>
-  )
-}
+  );
+};
 
-import React from 'react'
+import React from "react";
