@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useCallback } from "react"
-import { useGesture } from "@use-gesture/react"
-import "./DomeGallery.css"
+import { useEffect, useMemo, useRef, useCallback } from "react";
+import { useGesture } from "@use-gesture/react";
+import "./DomeGallery.css";
 
 interface ImageItem {
   src: string;
