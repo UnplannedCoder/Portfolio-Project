@@ -58,12 +58,21 @@ main.sphere-main {
 }
 
 .overlay {
-  background-image: radial-gradient(rgba(235, 235, 235, 0) 65%, var(--overlay-blur-color, #09090b) 100%);
+  background-image: radial-gradient(
+    rgba(235, 235, 235, 0) 65%,
+    var(--overlay-blur-color, #09090b) 100%
+  );
 }
 
 .overlay--blur {
-  -webkit-mask-image: radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, #09090b) 90%);
-  mask-image: radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, #09090b) 90%);
+  -webkit-mask-image: radial-gradient(
+    rgba(235, 235, 235, 0) 70%,
+    var(--overlay-blur-color, #09090b) 90%
+  );
+  mask-image: radial-gradient(
+    rgba(235, 235, 235, 0) 70%,
+    var(--overlay-blur-color, #09090b) 90%
+  );
   backdrop-filter: blur(3px);
 }
 
@@ -79,8 +88,18 @@ main.sphere-main {
   transform-origin: 50% 50%;
   backface-visibility: hidden;
   transition: transform 300ms;
-  transform: rotateY(calc(var(--rot-y) * (var(--offset-x) + ((var(--item-size-x) - 1) / 2)) + var(--rot-y-delta, 0deg)))
-    rotateX(calc(var(--rot-x) * (var(--offset-y) - ((var(--item-size-y) - 1) / 2)) + var(--rot-x-delta, 0deg)))
+  transform: rotateY(
+      calc(
+        var(--rot-y) * (var(--offset-x) + ((var(--item-size-x) - 1) / 2)) +
+          var(--rot-y-delta, 0deg)
+      )
+    )
+    rotateX(
+      calc(
+        var(--rot-x) * (var(--offset-y) - ((var(--item-size-y) - 1) / 2)) +
+          var(--rot-x-delta, 0deg)
+      )
+    )
     translateZ(var(--radius));
 }
 
@@ -94,21 +113,24 @@ main.sphere-main {
   inset: 6px;
   border-radius: var(--tile-radius, 22px);
   background: #1a1a1f;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   overflow: hidden;
   backface-visibility: hidden;
-  transition: transform 300ms, background 200ms, border-color 200ms;
+  transition:
+    transform 300ms,
+    background 200ms,
+    border-color 200ms;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   pointer-events: auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .item__image:hover {
   background: #22222a;
   border-color: rgba(139, 92, 246, 0.5);
-  box-shadow: 0 4px 24px rgba(139,92,246,0.2);
+  box-shadow: 0 4px 24px rgba(139, 92, 246, 0.2);
 }
 
 .item__image:focus {
@@ -127,7 +149,7 @@ main.sphere-main {
 .item__label {
   font-size: 9px;
   font-weight: 700;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
   text-align: center;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -172,7 +194,7 @@ main.sphere-main {
   backdrop-filter: blur(3px);
 }
 
-.sphere-root[data-enlarging='true'] .viewer .scrim {
+.sphere-root[data-enlarging="true"] .viewer .scrim {
   opacity: 1;
   pointer-events: all;
 }
@@ -182,7 +204,9 @@ main.sphere-main {
   z-index: 30;
   border-radius: var(--enlarge-radius, 32px);
   overflow: hidden;
-  transition: transform 500ms ease, opacity 500ms ease;
+  transition:
+    transform 500ms ease,
+    opacity 500ms ease;
   transform-origin: top left;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
@@ -205,7 +229,11 @@ main.sphere-main {
   height: 120px;
   z-index: 5;
   pointer-events: none;
-  background: linear-gradient(to bottom, transparent, var(--overlay-blur-color, #09090b));
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--overlay-blur-color, #09090b)
+  );
 }
 
 .edge-fade--top {
