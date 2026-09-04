@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef, CSSProperties } from 'react'
-import { cn } from '@/lib/utils'
+import { useEffect, useState, useRef, CSSProperties } from "react";
+import { cn } from "@/lib/utils";
 
 interface Sparkle {
-  id: string
-  x: string
-  y: string
-  color: string
-  delay: number
-  scale: number
-  lifespan: number
+  id: string;
+  x: string;
+  y: string;
+  color: string;
+  delay: number;
+  scale: number;
+  lifespan: number;
 }
 
 const generateSparkle = (color: string): Sparkle => ({
@@ -19,63 +19,65 @@ const generateSparkle = (color: string): Sparkle => ({
   delay: Math.random() * 2,
   scale: Math.random() * 1 + 0.5,
   lifespan: Math.random() * 10 + 5,
-})
+});
 
 interface SparklesTextProps {
-  text: string
-  sparklesCount?: number
-  colors?: { first: string; second: string }
-  className?: string
+  text: string;
+  sparklesCount?: number;
+  colors?: { first: string; second: string };
+  className?: string;
 }
 
 export function SparklesText({
   text,
   sparklesCount = 10,
-  colors = { first: '#9E7AFF', second: '#FE8BBB' },
+  colors = { first: "#9E7AFF", second: "#FE8BBB" },
   className,
 }: SparklesTextProps) {
-  const [sparkles, setSparkles] = useState<Sparkle[]>([])
-  const sparklesRef = useRef(sparkles)
+  const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+  const sparklesRef = useRef(sparkles);
 
   useEffect(() => {
-    sparklesRef.current = sparkles
-  })
+    sparklesRef.current = sparkles;
+  });
 
   useEffect(() => {
     const generateInitialSparkles = () => {
       const initial: Sparkle[] = Array.from({ length: sparklesCount }, (_, i) =>
         generateSparkle(i % 2 === 0 ? colors.first : colors.second),
-      )
-      setSparkles(initial)
-    }
+      );
+      setSparkles(initial);
+    };
 
-    generateInitialSparkles()
+    generateInitialSparkles();
 
     const interval = setInterval(() => {
       setSparkles((currentSparkles) => {
         const newSparkles = currentSparkles.map((sparkle) => ({
           ...sparkle,
           lifespan: sparkle.lifespan - 0.1,
-        }))
-        const filtered = newSparkles.filter((s) => s.lifespan > 0)
+        }));
+        const filtered = newSparkles.filter((s) => s.lifespan > 0);
         while (filtered.length < sparklesCount) {
-          const colorIndex = filtered.length % 2
-          filtered.push(generateSparkle(colorIndex === 0 ? colors.first : colors.second))
+          const colorIndex = filtered.length % 2;
+          filtered.push(
+            generateSparkle(colorIndex === 0 ? colors.first : colors.second),
+          );
         }
-        return filtered
-      })
-    }, 100)
+        return filtered;
+      });
+    }, 100);
 
-    return () => clearInterval(interval)
-  }, [sparklesCount, colors.first, colors.second])
+    return () => clearInterval(interval);
+  }, [sparklesCount, colors.first, colors.second]);
 
   return (
     <span
-      className={cn('relative inline-block', className)}
+      className={cn("relative inline-block", className)}
       style={
         {
-          '--sparkle-first-color': colors.first,
-          '--sparkle-second-color': colors.second,
+          "--sparkle-first-color": colors.first,
+          "--sparkle-second-color": colors.second,
         } as CSSProperties
       }
     >
@@ -102,5 +104,5 @@ export function SparklesText({
       ))}
       <span className="relative z-10">{text}</span>
     </span>
-  )
+  );
 }
