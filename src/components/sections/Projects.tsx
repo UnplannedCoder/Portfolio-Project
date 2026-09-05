@@ -1,44 +1,51 @@
-import { useRef, useState } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Github, ExternalLink, Star, BarChart2, Code2, ArrowUpRight } from 'lucide-react'
-import { projects } from '@/data/portfolio'
-import { cn } from '@/lib/utils'
+import { useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import {
+  Github,
+  ExternalLink,
+  Star,
+  BarChart2,
+  Code2,
+  ArrowUpRight,
+} from "lucide-react";
+import { projects } from "@/data/portfolio";
+import { cn } from "@/lib/utils";
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-}
+};
 
 const itemVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-}
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 const tagColors = [
-  'bg-violet-500/10 text-violet-300 border-violet-500/20',
-  'bg-cyan-500/10 text-cyan-300 border-cyan-500/20',
-  'bg-pink-500/10 text-pink-300 border-pink-500/20',
-  'bg-amber-500/10 text-amber-300 border-amber-500/20',
-  'bg-green-500/10 text-green-300 border-green-500/20',
-  'bg-blue-500/10 text-blue-300 border-blue-500/20',
-]
+  "bg-violet-500/10 text-violet-300 border-violet-500/20",
+  "bg-cyan-500/10 text-cyan-300 border-cyan-500/20",
+  "bg-pink-500/10 text-pink-300 border-pink-500/20",
+  "bg-amber-500/10 text-amber-300 border-amber-500/20",
+  "bg-green-500/10 text-green-300 border-green-500/20",
+  "bg-blue-500/10 text-blue-300 border-blue-500/20",
+];
 
-function ProjectCard({ project }: { project: typeof projects[0] }) {
+function ProjectCard({ project }: { project: (typeof projects)[0] }) {
   // Prefer live link, fall back to github
-  const primaryLink = project.live || project.github || '#'
-  const isExternal = primaryLink !== '#'
+  const primaryLink = project.live || project.github || "#";
+  const isExternal = primaryLink !== "#";
 
   return (
     <motion.div
       layout
       variants={itemVariants}
       className={cn(
-        'group relative flex flex-col rounded-2xl bg-zinc-900 border border-zinc-800 overflow-hidden',
-        'transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-black/50',
-        project.type === 'Data Analytics'
-          ? 'hover:border-cyan-500/50'
-          : 'hover:border-violet-500/50',
-        project.featured && 'ring-1 ring-violet-500/20',
+        "group relative flex flex-col rounded-2xl bg-zinc-900 border border-zinc-800 overflow-hidden",
+        "transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-black/50",
+        project.type === "Data Analytics"
+          ? "hover:border-cyan-500/50"
+          : "hover:border-violet-500/50",
+        project.featured && "ring-1 ring-violet-500/20",
       )}
     >
       {/* Featured badge */}
@@ -52,8 +59,8 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
       {/* ── Clickable image ── */}
       <a
         href={primaryLink}
-        target={isExternal ? '_blank' : undefined}
-        rel={isExternal ? 'noopener noreferrer' : undefined}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
         className="block relative overflow-hidden bg-zinc-800"
         aria-label={`Open ${project.title}`}
         tabIndex={0}
@@ -67,23 +74,27 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
               loading="lazy"
               onError={(e) => {
                 // If image fails, show fallback
-                const target = e.currentTarget
-                target.style.display = 'none'
-                const parent = target.parentElement
-                if (parent) parent.classList.add('fallback-shown')
+                const target = e.currentTarget;
+                target.style.display = "none";
+                const parent = target.parentElement;
+                if (parent) parent.classList.add("fallback-shown");
               }}
             />
           </div>
         ) : (
-          <div className={cn(
-            'w-full h-48 flex flex-col items-center justify-center gap-2',
-            project.type === 'Data Analytics'
-              ? 'bg-gradient-to-br from-cyan-900/40 via-zinc-900 to-blue-900/30'
-              : 'bg-gradient-to-br from-violet-900/40 via-zinc-900 to-purple-900/30',
-          )}>
-            {project.type === 'Data Analytics'
-              ? <BarChart2 className="w-8 h-8 text-cyan-500/40" />
-              : <Code2 className="w-8 h-8 text-violet-500/40" />}
+          <div
+            className={cn(
+              "w-full h-48 flex flex-col items-center justify-center gap-2",
+              project.type === "Data Analytics"
+                ? "bg-gradient-to-br from-cyan-900/40 via-zinc-900 to-blue-900/30"
+                : "bg-gradient-to-br from-violet-900/40 via-zinc-900 to-purple-900/30",
+            )}
+          >
+            {project.type === "Data Analytics" ? (
+              <BarChart2 className="w-8 h-8 text-cyan-500/40" />
+            ) : (
+              <Code2 className="w-8 h-8 text-violet-500/40" />
+            )}
             <span className="text-zinc-600 text-xs">{project.type}</span>
           </div>
         )}
@@ -93,7 +104,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium">
               <ArrowUpRight className="w-4 h-4" />
-              {project.live ? 'View Live' : 'View Code'}
+              {project.live ? "View Live" : "View Code"}
             </div>
           </div>
         </div>
@@ -106,21 +117,23 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           <h3 className="text-sm font-bold leading-snug flex-1">
             <a
               href={primaryLink}
-              target={isExternal ? '_blank' : undefined}
-              rel={isExternal ? 'noopener noreferrer' : undefined}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
               className="text-white hover:text-violet-400 transition-colors duration-200 hover:underline underline-offset-2"
               onClick={(e) => e.stopPropagation()}
             >
               {project.title}
             </a>
           </h3>
-          <span className={cn(
-            'shrink-0 mt-0.5 px-2 py-0.5 rounded-full text-xs border whitespace-nowrap',
-            project.type === 'Data Analytics'
-              ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20'
-              : 'bg-violet-500/10 text-violet-300 border-violet-500/20',
-          )}>
-            {project.type === 'Data Analytics' ? 'Analytics' : 'Full Stack'}
+          <span
+            className={cn(
+              "shrink-0 mt-0.5 px-2 py-0.5 rounded-full text-xs border whitespace-nowrap",
+              project.type === "Data Analytics"
+                ? "bg-cyan-500/10 text-cyan-300 border-cyan-500/20"
+                : "bg-violet-500/10 text-violet-300 border-violet-500/20",
+            )}
+          >
+            {project.type === "Data Analytics" ? "Analytics" : "Full Stack"}
           </span>
         </div>
 
@@ -133,7 +146,10 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           {project.tags.map((tag, i) => (
             <span
               key={tag}
-              className={cn('px-2 py-0.5 rounded-md text-xs font-medium border', tagColors[i % tagColors.length])}
+              className={cn(
+                "px-2 py-0.5 rounded-md text-xs font-medium border",
+                tagColors[i % tagColors.length],
+              )}
             >
               {tag}
             </span>
@@ -172,18 +188,19 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
-type FilterType = 'All' | 'Full Stack' | 'Data Analytics'
+type FilterType = "All" | "Full Stack" | "Data Analytics";
 
 export default function Projects() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [filter, setFilter] = useState<FilterType>('All')
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [filter, setFilter] = useState<FilterType>("All");
 
-  const filtered = filter === 'All' ? projects : projects.filter((p) => p.type === filter)
-  const tabs: FilterType[] = ['All', 'Full Stack', 'Data Analytics']
+  const filtered =
+    filter === "All" ? projects : projects.filter((p) => p.type === filter);
+  const tabs: FilterType[] = ["All", "Full Stack", "Data Analytics"];
 
   return (
     <section id="projects" className="relative py-24 bg-zinc-950">
@@ -194,7 +211,7 @@ export default function Projects() {
           ref={ref}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="text-center mb-10">
@@ -205,33 +222,40 @@ export default function Projects() {
               My <span className="gradient-text">Projects</span>
             </h2>
             <p className="text-zinc-500 max-w-2xl mx-auto text-sm">
-              Full-stack web applications and data analytics dashboards built during my internship and personal learning journey.
+              Full-stack web applications and data analytics dashboards built
+              during my internship and personal learning journey.
             </p>
             <div className="w-20 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto mt-4" />
           </motion.div>
 
           {/* Filter tabs */}
-          <motion.div variants={itemVariants} className="flex justify-center gap-2 mb-10 flex-wrap">
+          <motion.div
+            variants={itemVariants}
+            className="flex justify-center gap-2 mb-10 flex-wrap"
+          >
             {tabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setFilter(tab)}
                 className={cn(
-                  'px-5 py-2 rounded-xl text-sm font-medium transition-all duration-200 border',
+                  "px-5 py-2 rounded-xl text-sm font-medium transition-all duration-200 border",
                   filter === tab
-                    ? 'bg-violet-600 border-violet-500 text-white shadow-lg shadow-violet-500/20'
-                    : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600',
+                    ? "bg-violet-600 border-violet-500 text-white shadow-lg shadow-violet-500/20"
+                    : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600",
                 )}
               >
-                {tab === 'All'
+                {tab === "All"
                   ? `All (${projects.length})`
-                  : `${tab} (${projects.filter(p => p.type === tab).length})`}
+                  : `${tab} (${projects.filter((p) => p.type === tab).length})`}
               </button>
             ))}
           </motion.div>
 
           {/* Grid */}
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             <AnimatePresence mode="popLayout">
               {filtered.map((project) => (
                 <ProjectCard key={project.id} project={project} />
@@ -241,5 +265,5 @@ export default function Projects() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
