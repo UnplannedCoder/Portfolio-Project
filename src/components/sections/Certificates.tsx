@@ -1,42 +1,64 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Award, Calendar, BookOpen } from 'lucide-react'
-import { certificates } from '@/data/portfolio'
-import { cn } from '@/lib/utils'
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { Award, Calendar, BookOpen } from "lucide-react";
+import { certificates } from "@/data/portfolio";
+import { cn } from "@/lib/utils";
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
-}
+};
 
 const itemVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: 'easeOut' } },
-}
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: "easeOut" },
+  },
+};
 
 // Issuer accent colours
 const issuerAccent: Record<string, { border: string; text: string }> = {
-  'Google / Coursera':    { border: 'hover:border-red-500/40',     text: 'text-red-400' },
-  'Microsoft / Coursera': { border: 'hover:border-blue-500/40',    text: 'text-blue-400' },
-  'Deloitte / Forage':    { border: 'hover:border-green-500/40',   text: 'text-green-400' },
-  'Meta / Coursera':      { border: 'hover:border-indigo-500/40',  text: 'text-indigo-400' },
-  'HP LIFE':              { border: 'hover:border-cyan-500/40',    text: 'text-cyan-400' },
-  'HackerRank':           { border: 'hover:border-emerald-500/40', text: 'text-emerald-400' },
-  'GeeksforGeeks':        { border: 'hover:border-lime-500/40',    text: 'text-lime-400' },
-}
-const defaultAccent = { border: 'hover:border-violet-500/40', text: 'text-violet-400' }
+  "Google / Coursera": {
+    border: "hover:border-red-500/40",
+    text: "text-red-400",
+  },
+  "Microsoft / Coursera": {
+    border: "hover:border-blue-500/40",
+    text: "text-blue-400",
+  },
+  "Deloitte / Forage": {
+    border: "hover:border-green-500/40",
+    text: "text-green-400",
+  },
+  "Meta / Coursera": {
+    border: "hover:border-indigo-500/40",
+    text: "text-indigo-400",
+  },
+  "HP LIFE": { border: "hover:border-cyan-500/40", text: "text-cyan-400" },
+  HackerRank: {
+    border: "hover:border-emerald-500/40",
+    text: "text-emerald-400",
+  },
+  GeeksforGeeks: { border: "hover:border-lime-500/40", text: "text-lime-400" },
+};
+const defaultAccent = {
+  border: "hover:border-violet-500/40",
+  text: "text-violet-400",
+};
 
-type Cert = typeof certificates[0]
+type Cert = (typeof certificates)[0];
 
 function CertCard({ cert }: { cert: Cert }) {
-  const accent = issuerAccent[cert.issuer] ?? defaultAccent
+  const accent = issuerAccent[cert.issuer] ?? defaultAccent;
 
   return (
     <motion.div
       variants={itemVariants}
       className={cn(
-        'group flex flex-col rounded-2xl bg-zinc-900 border border-zinc-800 overflow-hidden',
-        'transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/40',
+        "group flex flex-col rounded-2xl bg-zinc-900 border border-zinc-800 overflow-hidden",
+        "transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/40",
         accent.border,
       )}
     >
@@ -58,7 +80,9 @@ function CertCard({ cert }: { cert: Cert }) {
           {cert.title}
         </h3>
 
-        <p className={cn('text-xs font-semibold', accent.text)}>{cert.issuer}</p>
+        <p className={cn("text-xs font-semibold", accent.text)}>
+          {cert.issuer}
+        </p>
 
         {/* Meta row */}
         <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500">
@@ -87,12 +111,12 @@ function CertCard({ cert }: { cert: Cert }) {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
 export default function Certificates() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section id="certificates" className="relative py-24 bg-zinc-950/60">
@@ -105,7 +129,7 @@ export default function Certificates() {
           ref={ref}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="text-center mb-14">
@@ -117,7 +141,8 @@ export default function Certificates() {
             </h2>
             <p className="text-zinc-500 max-w-xl mx-auto text-sm flex items-center justify-center gap-2">
               <Award className="w-4 h-4 text-violet-400 shrink-0" />
-              {certificates.length} professional certifications from Google, Microsoft, Meta, Deloitte &amp; more
+              {certificates.length} professional certifications from Google,
+              Microsoft, Meta, Deloitte &amp; more
             </p>
             <div className="w-20 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto mt-4" />
           </motion.div>
@@ -131,5 +156,5 @@ export default function Certificates() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
