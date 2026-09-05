@@ -1,132 +1,138 @@
-import { useRef, useEffect, useState, useCallback } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { skills } from '@/data/portfolio'
-import { cn } from '@/lib/utils'
+import { useRef, useEffect, useState, useCallback } from "react";
+import { motion, useInView } from "framer-motion";
+import { skills } from "@/data/portfolio";
+import { cn } from "@/lib/utils";
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-}
+};
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-}
+};
 
 const BASE_TILES = [
-  { src: '/skills/python.png',     label: 'Python'     },
-  { src: '/skills/javascript.png', label: 'JavaScript' },
-  { src: '/skills/react.png',      label: 'React.js'   },
-  { src: '/skills/nodejs.png',     label: 'Node.js'    },
-  { src: '/skills/express.png',    label: 'Express.js' },
-  { src: '/skills/html5.png',      label: 'HTML5'      },
-  { src: '/skills/css3.png',       label: 'CSS3'       },
-  { src: '/skills/mysql.png',      label: 'MySQL'      },
-  { src: '/skills/mongodb.png',    label: 'MongoDB'    },
-  { src: '/skills/git.png',        label: 'Git'        },
-  { src: '/skills/github.png',     label: 'GitHub'     },
-  { src: '/skills/powerbi.png',    label: 'Power BI'   },
-  { src: '/skills/excel.png',      label: 'Excel'      },
-  { src: '/skills/typescript.png', label: 'TypeScript' },
-]
+  { src: "/skills/python.png", label: "Python" },
+  { src: "/skills/javascript.png", label: "JavaScript" },
+  { src: "/skills/react.png", label: "React.js" },
+  { src: "/skills/nodejs.png", label: "Node.js" },
+  { src: "/skills/express.png", label: "Express.js" },
+  { src: "/skills/html5.png", label: "HTML5" },
+  { src: "/skills/css3.png", label: "CSS3" },
+  { src: "/skills/mysql.png", label: "MySQL" },
+  { src: "/skills/mongodb.png", label: "MongoDB" },
+  { src: "/skills/git.png", label: "Git" },
+  { src: "/skills/github.png", label: "GitHub" },
+  { src: "/skills/powerbi.png", label: "Power BI" },
+  { src: "/skills/excel.png", label: "Excel" },
+  { src: "/skills/typescript.png", label: "TypeScript" },
+];
 
 // Repeat 3× so carousel is dense
-const SKILL_TILES = [...BASE_TILES, ...BASE_TILES, ...BASE_TILES]
+const SKILL_TILES = [...BASE_TILES, ...BASE_TILES, ...BASE_TILES];
 
-const TILE_W     = 72
-const TILE_H     = 72
-const AUTO_SPEED = 0.04  // deg/frame
+const TILE_W = 72;
+const TILE_H = 72;
+const AUTO_SPEED = 0.04; // deg/frame
 
 function SkillCarousel() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const angleRef = useRef(0)
-  const [angle, setAngle]  = useState(0)
-  const [dims, setDims]    = useState({ w: 680, h: 260, radius: 340 })
-  const rafRef   = useRef<number | null>(null)
-  const dragging = useRef(false)
-  const lastX    = useRef(0)
-  const velRef   = useRef(AUTO_SPEED)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const angleRef = useRef(0);
+  const [angle, setAngle] = useState(0);
+  const [dims, setDims] = useState({ w: 680, h: 260, radius: 340 });
+  const rafRef = useRef<number | null>(null);
+  const dragging = useRef(false);
+  const lastX = useRef(0);
+  const velRef = useRef(AUTO_SPEED);
 
-  const N = SKILL_TILES.length
+  const N = SKILL_TILES.length;
 
   // Measure container width and derive radius + height responsively
   const updateDims = useCallback(() => {
-    if (!containerRef.current) return
-    const w = containerRef.current.offsetWidth
-    const isMobile = w < 640
-    const radius = isMobile ? w * 0.42 : Math.min(w * 0.47, 380)
-    const h      = isMobile ? 200 : 260
-    setDims({ w, h, radius })
-  }, [])
+    if (!containerRef.current) return;
+    const w = containerRef.current.offsetWidth;
+    const isMobile = w < 640;
+    const radius = isMobile ? w * 0.42 : Math.min(w * 0.47, 380);
+    const h = isMobile ? 200 : 260;
+    setDims({ w, h, radius });
+  }, []);
 
   useEffect(() => {
-    updateDims()
-    const ro = new ResizeObserver(updateDims)
-    if (containerRef.current) ro.observe(containerRef.current)
-    return () => ro.disconnect()
-  }, [updateDims])
+    updateDims();
+    const ro = new ResizeObserver(updateDims);
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, [updateDims]);
 
   useEffect(() => {
     const step = () => {
       if (!dragging.current) {
-        velRef.current = velRef.current * 0.97 + AUTO_SPEED * 0.03
+        velRef.current = velRef.current * 0.97 + AUTO_SPEED * 0.03;
       }
-      angleRef.current = (angleRef.current + velRef.current + 360) % 360
-      setAngle(angleRef.current)
-      rafRef.current = requestAnimationFrame(step)
-    }
-    rafRef.current = requestAnimationFrame(step)
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
-  }, [])
+      angleRef.current = (angleRef.current + velRef.current + 360) % 360;
+      setAngle(angleRef.current);
+      rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   const onMouseDown = (e: React.MouseEvent) => {
-    dragging.current = true
-    lastX.current    = e.clientX
-  }
+    dragging.current = true;
+    lastX.current = e.clientX;
+  };
   const onMouseMove = (e: React.MouseEvent) => {
-    if (!dragging.current) return
-    const dx = e.clientX - lastX.current
-    lastX.current = e.clientX
-    velRef.current = -dx * 0.3
-  }
-  const onMouseUp = () => { dragging.current = false }
+    if (!dragging.current) return;
+    const dx = e.clientX - lastX.current;
+    lastX.current = e.clientX;
+    velRef.current = -dx * 0.3;
+  };
+  const onMouseUp = () => {
+    dragging.current = false;
+  };
 
   const onTouchStart = (e: React.TouchEvent) => {
-    dragging.current = true
-    lastX.current    = e.touches[0].clientX
-  }
+    dragging.current = true;
+    lastX.current = e.touches[0].clientX;
+  };
   const onTouchMove = (e: React.TouchEvent) => {
-    if (!dragging.current) return
-    const dx = e.touches[0].clientX - lastX.current
-    lastX.current = e.touches[0].clientX
-    velRef.current = -dx * 0.3
-  }
-  const onTouchEnd = () => { dragging.current = false }
+    if (!dragging.current) return;
+    const dx = e.touches[0].clientX - lastX.current;
+    lastX.current = e.touches[0].clientX;
+    velRef.current = -dx * 0.3;
+  };
+  const onTouchEnd = () => {
+    dragging.current = false;
+  };
 
   // Scale tile size on very small screens
-  const tileScale = dims.w < 400 ? 0.78 : dims.w < 640 ? 0.88 : 1
-  const tileW = Math.round(TILE_W * tileScale)
-  const tileH = Math.round(TILE_H * tileScale)
+  const tileScale = dims.w < 400 ? 0.78 : dims.w < 640 ? 0.88 : 1;
+  const tileW = Math.round(TILE_W * tileScale);
+  const tileH = Math.round(TILE_H * tileScale);
 
   // Responsive Y spread
-  const ySpread = dims.h * 0.35
+  const ySpread = dims.h * 0.35;
   const yOffsets = SKILL_TILES.map((_, i) => {
-    const seed = (i * 137.508) % 1
-    return (seed - 0.5) * ySpread * 2
-  })
+    const seed = (i * 137.508) % 1;
+    return (seed - 0.5) * ySpread * 2;
+  });
 
   return (
     <div ref={containerRef} className="w-full">
       <div
         style={{
-          width: '100%',
+          width: "100%",
           height: dims.h,
-          position: 'relative',
-          overflow: 'hidden',
+          position: "relative",
+          overflow: "hidden",
           borderRadius: 16,
-          cursor: 'grab',
-          userSelect: 'none',
-          touchAction: 'none',
+          cursor: "grab",
+          userSelect: "none",
+          touchAction: "none",
         }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
@@ -137,57 +143,67 @@ function SkillCarousel() {
         onTouchEnd={onTouchEnd}
       >
         {/* Left / right edge fades */}
-        <div className="absolute inset-0 pointer-events-none z-10" style={{
-          background: 'linear-gradient(to right, #09090b 0%, transparent 10%, transparent 90%, #09090b 100%)',
-        }} />
+        <div
+          className="absolute inset-0 pointer-events-none z-10"
+          style={{
+            background:
+              "linear-gradient(to right, #09090b 0%, transparent 10%, transparent 90%, #09090b 100%)",
+          }}
+        />
         {/* Top / bottom edge fades */}
-        <div className="absolute inset-0 pointer-events-none z-10" style={{
-          background: 'linear-gradient(to bottom, #09090b 0%, transparent 12%, transparent 88%, #09090b 100%)',
-        }} />
+        <div
+          className="absolute inset-0 pointer-events-none z-10"
+          style={{
+            background:
+              "linear-gradient(to bottom, #09090b 0%, transparent 12%, transparent 88%, #09090b 100%)",
+          }}
+        />
 
         {/* 3-D stage */}
-        <div style={{
-          position: 'absolute',
-          left: dims.w / 2,
-          top:  dims.h / 2,
-          transformStyle: 'preserve-3d',
-          perspective: 900,
-          width: 0,
-          height: 0,
-        }}>
+        <div
+          style={{
+            position: "absolute",
+            left: dims.w / 2,
+            top: dims.h / 2,
+            transformStyle: "preserve-3d",
+            perspective: 900,
+            width: 0,
+            height: 0,
+          }}
+        >
           {SKILL_TILES.map((tile, i) => {
-            const baseAngle = (i / N) * 360
-            const deg  = baseAngle + angle
-            const rad  = (deg * Math.PI) / 180
-            const x    = Math.sin(rad) * dims.radius
-            const z    = Math.cos(rad) * dims.radius
-            const y    = yOffsets[i]
+            const baseAngle = (i / N) * 360;
+            const deg = baseAngle + angle;
+            const rad = (deg * Math.PI) / 180;
+            const x = Math.sin(rad) * dims.radius;
+            const z = Math.cos(rad) * dims.radius;
+            const y = yOffsets[i];
 
-            const depth   = (z + dims.radius) / (dims.radius * 2)
-            const scale   = 0.5 + depth * 0.55
-            const opacity = 0.3 + depth * 0.7
+            const depth = (z + dims.radius) / (dims.radius * 2);
+            const scale = 0.5 + depth * 0.55;
+            const opacity = 0.3 + depth * 0.7;
 
             return (
               <div
                 key={`${tile.label}-${i}`}
                 style={{
-                  position: 'absolute',
-                  width:  tileW,
+                  position: "absolute",
+                  width: tileW,
                   height: tileH,
-                  left:  -tileW / 2,
-                  top:   -tileH / 2,
+                  left: -tileW / 2,
+                  top: -tileH / 2,
                   transform: `translate3d(${x}px,${y}px,${z}px) scale(${scale})`,
                   opacity,
                   zIndex: Math.round(depth * 100),
-                  willChange: 'transform',
+                  willChange: "transform",
                 }}
               >
                 <div
                   className="w-full h-full flex flex-col items-center justify-center gap-1 rounded-[14px]"
                   style={{
-                    background: '#15151a',
-                    border:     '1px solid rgba(255,255,255,0.08)',
-                    boxShadow:  '0 3px 12px rgba(0,0,0,0.5)',
+                    background: "#15151a",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    boxShadow: "0 3px 12px rgba(0,0,0,0.5)",
                   }}
                 >
                   <img
@@ -195,40 +211,50 @@ function SkillCarousel() {
                     alt={tile.label}
                     draggable={false}
                     style={{
-                      width:  '50%',
-                      height: '50%',
-                      objectFit: 'contain',
-                      pointerEvents: 'none',
+                      width: "50%",
+                      height: "50%",
+                      objectFit: "contain",
+                      pointerEvents: "none",
                     }}
                   />
-                  <span style={{
-                    fontSize:      dims.w < 640 ? 6 : 6.5,
-                    fontWeight:    700,
-                    color:         'rgba(255,255,255,0.45)',
-                    letterSpacing: '0.07em',
-                    textTransform: 'uppercase',
-                    lineHeight:    1,
-                    pointerEvents: 'none',
-                  }}>
+                  <span
+                    style={{
+                      fontSize: dims.w < 640 ? 6 : 6.5,
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.45)",
+                      letterSpacing: "0.07em",
+                      textTransform: "uppercase",
+                      lineHeight: 1,
+                      pointerEvents: "none",
+                    }}
+                  >
                     {tile.label}
                   </span>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-function SkillBar({ name, level, icon, delay = 0 }: {
-  name: string; level: number; icon: string; delay?: number
+function SkillBar({
+  name,
+  level,
+  icon,
+  delay = 0,
+}: {
+  name: string;
+  level: number;
+  icon: string;
+  delay?: number;
 }) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
 
   return (
     <div ref={ref} className="space-y-1">
@@ -242,17 +268,17 @@ function SkillBar({ name, level, icon, delay = 0 }: {
         <motion.div
           initial={{ width: 0 }}
           animate={isInView ? { width: `${level}%` } : { width: 0 }}
-          transition={{ duration: 1, delay, ease: 'easeOut' }}
+          transition={{ duration: 1, delay, ease: "easeOut" }}
           className="h-full rounded-full bg-gradient-to-r from-violet-600 to-cyan-500"
         />
       </div>
     </div>
-  )
+  );
 }
 
 export default function Skills() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section id="skills" className="relative py-24 bg-zinc-950/50">
@@ -263,7 +289,7 @@ export default function Skills() {
           ref={ref}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="text-center mb-10">
@@ -280,7 +306,10 @@ export default function Skills() {
           <motion.div variants={itemVariants} className="mb-2">
             <SkillCarousel />
           </motion.div>
-          <motion.p variants={itemVariants} className="text-center text-zinc-700 text-xs mb-12">
+          <motion.p
+            variants={itemVariants}
+            className="text-center text-zinc-700 text-xs mb-12"
+          >
             Drag to rotate
           </motion.p>
 
@@ -294,12 +323,18 @@ export default function Skills() {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-white">
-                  <span className={cn(
-                    'w-2 h-5 rounded-full',
-                    catIdx % 4 === 0 ? 'bg-violet-500' :
-                    catIdx % 4 === 1 ? 'bg-cyan-500'   :
-                    catIdx % 4 === 2 ? 'bg-pink-500'   : 'bg-amber-500',
-                  )} />
+                  <span
+                    className={cn(
+                      "w-2 h-5 rounded-full",
+                      catIdx % 4 === 0
+                        ? "bg-violet-500"
+                        : catIdx % 4 === 1
+                          ? "bg-cyan-500"
+                          : catIdx % 4 === 2
+                            ? "bg-pink-500"
+                            : "bg-amber-500",
+                    )}
+                  />
                   {category.category}
                 </h3>
                 <div className="space-y-4">
@@ -319,5 +354,5 @@ export default function Skills() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
