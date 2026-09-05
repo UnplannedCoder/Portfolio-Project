@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion'
-import { Code2, Github, Linkedin, ArrowUp } from 'lucide-react'
-import { personalInfo } from '@/data/portfolio'
+import { motion } from "framer-motion";
+import { Code2, Github, Linkedin, ArrowUp } from "lucide-react";
+import { personalInfo } from "@/data/portfolio";
 
 export default function Footer() {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <footer className="relative bg-zinc-950 border-t border-zinc-900">
@@ -29,8 +29,12 @@ export default function Footer() {
           {/* Socials + scroll top */}
           <div className="flex items-center gap-3">
             {[
-              { icon: Github, href: personalInfo.github, label: 'GitHub' },
-              { icon: Linkedin, href: personalInfo.linkedin, label: 'LinkedIn' },
+              { icon: Github, href: personalInfo.github, label: "GitHub" },
+              {
+                icon: Linkedin,
+                href: personalInfo.linkedin,
+                label: "LinkedIn",
+              },
             ].map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
@@ -57,5 +61,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
