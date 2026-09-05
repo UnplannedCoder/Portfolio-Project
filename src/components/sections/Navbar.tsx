@@ -1,56 +1,56 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Code2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { personalInfo } from '@/data/portfolio'
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, Code2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { personalInfo } from "@/data/portfolio";
 
 const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Certificates', href: '#certificates' },
-  { label: 'Contact', href: '#contact' },
-]
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Projects", href: "#projects" },
+  { label: "Certificates", href: "#certificates" },
+  { label: "Contact", href: "#contact" },
+];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('home')
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-      const sections = navLinks.map((l) => l.href.slice(1))
+      setScrolled(window.scrollY > 20);
+      const sections = navLinks.map((l) => l.href.slice(1));
       const current = sections.find((id) => {
-        const el = document.getElementById(id)
-        if (!el) return false
-        const rect = el.getBoundingClientRect()
-        return rect.top <= 100 && rect.bottom >= 100
-      })
-      if (current) setActiveSection(current)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+        const el = document.getElementById(id);
+        if (!el) return false;
+        const rect = el.getBoundingClientRect();
+        return rect.top <= 100 && rect.bottom >= 100;
+      });
+      if (current) setActiveSection(current);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollTo = (href: string) => {
-    setIsOpen(false)
-    const el = document.querySelector(href)
-    el?.scrollIntoView({ behavior: 'smooth' })
-  }
+    setIsOpen(false);
+    const el = document.querySelector(href);
+    el?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           scrolled
-            ? 'bg-zinc-950/80 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20'
-            : 'bg-transparent',
+            ? "bg-zinc-950/80 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20"
+            : "bg-transparent",
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,7 +58,10 @@ export default function Navbar() {
             {/* Logo */}
             <motion.a
               href="#home"
-              onClick={(e) => { e.preventDefault(); scrollTo('#home') }}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("#home");
+              }}
               className="flex items-center gap-2 group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -67,7 +70,7 @@ export default function Navbar() {
                 <Code2 className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-lg gradient-text">
-                {personalInfo.name.split(' ')[0]}
+                {personalInfo.name.split(" ")[0]}
               </span>
             </motion.a>
 
@@ -78,17 +81,21 @@ export default function Navbar() {
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
                   className={cn(
-                    'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative',
+                    "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative",
                     activeSection === link.href.slice(1)
-                      ? 'text-white'
-                      : 'text-zinc-400 hover:text-white',
+                      ? "text-white"
+                      : "text-zinc-400 hover:text-white",
                   )}
                 >
                   {activeSection === link.href.slice(1) && (
                     <motion.span
                       layoutId="nav-active"
                       className="absolute inset-0 bg-white/10 rounded-lg"
-                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 350,
+                        damping: 30,
+                      }}
                     />
                   )}
                   <span className="relative z-10">{link.label}</span>
@@ -113,7 +120,11 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
             >
-              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>
@@ -138,10 +149,10 @@ export default function Navbar() {
                   transition={{ delay: i * 0.05 }}
                   onClick={() => scrollTo(link.href)}
                   className={cn(
-                    'px-4 py-3 rounded-lg text-sm font-medium text-left transition-colors',
+                    "px-4 py-3 rounded-lg text-sm font-medium text-left transition-colors",
                     activeSection === link.href.slice(1)
-                      ? 'bg-violet-600/20 text-violet-300'
-                      : 'text-zinc-400 hover:text-white hover:bg-white/5',
+                      ? "bg-violet-600/20 text-violet-300"
+                      : "text-zinc-400 hover:text-white hover:bg-white/5",
                   )}
                 >
                   {link.label}
@@ -162,5 +173,5 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }
