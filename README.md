@@ -2,24 +2,24 @@
 
 A modern, animated personal portfolio built with React, TypeScript, and Tailwind CSS. Features smooth Framer Motion animations, Magic UI effects, Aceternity UI visual components, a 3D physics Lanyard card, a draggable 3D skill carousel, and a fully responsive dark theme.
 
-**Live:** _deploy link here_  &nbsp;|&nbsp; **Author:** [Pawan Sain](https://www.linkedin.com/in/pawan-sain-18b74631b)
+**Live:** _deploy link here_ &nbsp;|&nbsp; **Author:** [Pawan Sain](https://www.linkedin.com/in/pawan-sain-18b74631b)
 
 ---
 
 ## Tech Stack
 
-| Category | Technologies |
-|----------|-------------|
-| Framework | React 18 + TypeScript |
-| Build Tool | Vite 5 |
-| Styling | Tailwind CSS v3 |
-| Animations | Framer Motion 11 |
-| UI Components | shadcn/ui (Radix UI primitives) |
-| Effects | Magic UI — BorderBeam, Meteors, SparklesText, NumberTicker |
-| Effects | Aceternity UI — BackgroundBeams |
-| 3D Card | @react-three/fiber, @react-three/drei, @react-three/rapier, meshline |
-| Drag Gestures | @use-gesture/react |
-| Icons | Lucide React |
+| Category      | Technologies                                                         |
+| ------------- | -------------------------------------------------------------------- |
+| Framework     | React 18 + TypeScript                                                |
+| Build Tool    | Vite 5                                                               |
+| Styling       | Tailwind CSS v3                                                      |
+| Animations    | Framer Motion 11                                                     |
+| UI Components | shadcn/ui (Radix UI primitives)                                      |
+| Effects       | Magic UI — BorderBeam, Meteors, SparklesText, NumberTicker           |
+| Effects       | Aceternity UI — BackgroundBeams                                      |
+| 3D Card       | @react-three/fiber, @react-three/drei, @react-three/rapier, meshline |
+| Drag Gestures | @use-gesture/react                                                   |
+| Icons         | Lucide React                                                         |
 
 ---
 
@@ -119,19 +119,20 @@ npm run preview
 
 All personal content lives in one file — **`src/data/portfolio.ts`**.
 
-| Export | What it controls |
-|--------|-----------------|
-| `personalInfo` | Name, title, bio, contact, social links, resume link, stats |
-| `education` | Degree, university, duration |
-| `experience` | Internship/job roles and responsibilities |
-| `skills` | Skill categories, names, proficiency levels |
-| `techStack` | Tech stack labels (legacy, kept for reference) |
-| `projects` | Project cards — title, description, tags, image, links, type |
-| `certificates` | Certificate cards — title, issuer, date, image, tags |
+| Export         | What it controls                                             |
+| -------------- | ------------------------------------------------------------ |
+| `personalInfo` | Name, title, bio, contact, social links, resume link, stats  |
+| `education`    | Degree, university, duration                                 |
+| `experience`   | Internship/job roles and responsibilities                    |
+| `skills`       | Skill categories, names, proficiency levels                  |
+| `techStack`    | Tech stack labels (legacy, kept for reference)               |
+| `projects`     | Project cards — title, description, tags, image, links, type |
+| `certificates` | Certificate cards — title, issuer, date, image, tags         |
 
 ### Profile Photo
 
 Save your photo to `public/photo/photo.jpg`. Used in:
+
 - The **About** section avatar box
 - The **Lanyard 3D card** front face
 
@@ -180,10 +181,10 @@ The 3D card is toggled by the **Show Card / Hide Card** button in the Hero secti
 
 The `dist/` output is a static site — deploy to any static host:
 
-| Platform | Steps |
-|----------|-------|
-| **Vercel** | Connect GitHub repo or run `vercel --prod` |
-| **Netlify** | Drag `dist/` folder to Netlify dashboard |
+| Platform         | Steps                                                       |
+| ---------------- | ----------------------------------------------------------- |
+| **Vercel**       | Connect GitHub repo or run `vercel --prod`                  |
+| **Netlify**      | Drag `dist/` folder to Netlify dashboard                    |
 | **GitHub Pages** | Use `gh-pages` package to push `dist/` to `gh-pages` branch |
 
 > Note: `npm install --legacy-peer-deps` is required due to `@react-three/fiber@8` requiring React 18.
